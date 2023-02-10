@@ -1,30 +1,39 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'dart:convert';
 
+import 'package:bloc_test/bloc_test.dart';
+import 'package:coffe_pictures_assessment/bloc/coffe_images_bloc.dart';
+import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
+import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
+import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:coffe_pictures_assessment/home_page.dart';
+import 'package:mockito/mockito.dart';
+
+class CoffeImagesRepositoryMock extends Mock implements CoffeImagesRepository {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const HomePage());
+  late CoffeImagesBloc coffeImagesBloc;
+  late CoffeImagesRepository coffeImagesRepositoryMock;
+  late MyImage img;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  setUpAll(() {
+    coffeImagesRepositoryMock = CoffeImagesRepositoryMock();
+    coffeImagesBloc = CoffeImagesBloc(repository: coffeImagesRepositoryMock);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Check buttons', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home:
+            BlocProvider.value(value: coffeImagesBloc, child: const HomePage()),
+      ),
+    );
+    expect(find.byKey(const Key("getImage")), findsOneWidget);
+    expect(find.byKey(const Key("saveImage")), findsOneWidget);
   });
 }

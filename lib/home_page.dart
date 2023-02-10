@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:coffe_pictures_assessment/bloc/coffe_images_bloc.dart';
@@ -7,9 +6,6 @@ import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
 import 'package:coffe_pictures_assessment/image_model.dart';
 import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _albumName = 'Recentes';
   CoffeImagesBloc get _bloc => BlocProvider.of<CoffeImagesBloc>(context);
   CoffeImagesRepository repository = CoffeImagesRepository();
   MyImage? _image;
@@ -81,11 +76,7 @@ class _HomePageState extends State<HomePage> {
           return;
         }
       }
-      Directory documentDirectory =
-          await syspaths.getApplicationDocumentsDirectory();
-      final String imagePath = _image!.imageUrl.split('/').last;
-      File file = File(path.join(documentDirectory.path, imagePath));
-      await GallerySaver.saveImage(imagePath, albumName: _albumName);
+      await GallerySaver.saveImage(_image!.imageUrl);
       showSnackBar('Image saved!');
     } catch (e) {
       showSnackBar('Error - Image was not saved');
@@ -98,7 +89,7 @@ class _HomePageState extends State<HomePage> {
         message,
         textAlign: TextAlign.center,
       ),
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -130,11 +121,13 @@ class _HomePageState extends State<HomePage> {
                           ),
               ),
               ElevatedButton(
+                  key: const Key("getImage"),
                   onPressed: () {
                     _getImage();
                   },
                   child: const Text("Load coffe image")),
               ElevatedButton(
+                  key: const Key("saveImage"),
                   onPressed: () {
                     _saveImage();
                   },
