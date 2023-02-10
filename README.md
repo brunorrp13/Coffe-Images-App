@@ -1,4 +1,4 @@
-# Assets Variation - Flutter App
+# Coffe Images - Flutter App
 
 Coffe Images app was made in Flutter and it has two buttons: One that gets a random coffe image from the followig API: https://coffee.alexflipnote.dev and another another to save it to the photo gallery, and also an empty square that displays the image once it is loaded from the network. When the "Load image" button is pressed, a loading widget is shown on the empty square while it waits for the API response (if it is positive, the image is displayed on it). The first time the "Save to gallery" button is pressed, it asks for permission to access the mobile's gallery. If the "Save to gallery" button is pressed and no image was loaded yet or if there was an error on the API conenction, a Snackback shows an error message informing it. The Bloc Pattern was used to handle business logic (with a test class added for it and for the widgets).
 
