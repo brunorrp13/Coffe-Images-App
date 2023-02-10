@@ -1,5 +1,6 @@
 import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
+import 'package:coffe_pictures_assessment/image_model.dart';
 import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,18 +13,15 @@ class CoffeImagesBloc extends Bloc<CoffeImagesEvent, CoffeImagesState> {
     on<OnFindCoffeImage>((event, emit) async {
       emit(LoadingState());
       try {
-        final String? response = await repository.getCoffeImage();
-        if (response == null || response.isEmpty) {
+        final MyImage? response = await repository.getCoffeImage();
+        if (response == null || response.imageUrl.isEmpty) {
           emit(OnNoDataFound());
           return;
         }
-        if (response.isNotEmpty) {
-          var imageData = OnImageDataFound(imageUrl: response);
-          emit(SuccessfullyLoadedContentState<OnImageDataFound>(
-              content: imageData));
-          return;
-        }
-        emit(OnNoDataFound());
+        var imageData = OnImageDataFound(myImage: response);
+        emit(SuccessfullyLoadedContentState<OnImageDataFound>(
+            content: imageData));
+        return;
       } catch (exception) {
         emit(OnNoDataFound());
       }

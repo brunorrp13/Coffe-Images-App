@@ -1,3 +1,4 @@
+import 'package:coffe_pictures_assessment/image_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CoffeImagesState extends Equatable {}
@@ -21,13 +22,13 @@ class SuccessfullyLoadedContentState<T> extends CoffeImagesState {
 }
 
 class OnImageDataFound extends CoffeImagesState {
-  final String? imageUrl;
+  final MyImage? myImage;
   OnImageDataFound({
-    this.imageUrl,
+    this.myImage,
   });
 
   @override
-  List<Object?> get props => <Object?>[imageUrl];
+  List<Object?> get props => <Object?>[myImage];
 }
 
 class OnNoDataFound extends CoffeImagesState {
