@@ -96,7 +96,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _content() {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text(
+            'Coffe Images',
+            textAlign: TextAlign.center,
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -125,13 +130,13 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     _getImage();
                   },
-                  child: const Text("Load coffe image")),
+                  child: const Text("Load image")),
               ElevatedButton(
                   key: const Key("saveImage"),
                   onPressed: () {
                     _saveImage();
                   },
-                  child: const Text("Save image"))
+                  child: const Text("Save to gallery"))
             ],
           ),
         ));
