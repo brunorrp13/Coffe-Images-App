@@ -20,15 +20,15 @@ class SuccessfullyLoadedContentState<T> extends CoffeImagesState {
   List<Object?> get props => <Object>[content as Object];
 }
 
-// class OnAssetsDataFound extends AssetsState {
-//   final StrockResponseModel? assetsResponse;
-//   OnAssetsDataFound({
-//     this.assetsResponse,
-//   });
+class OnImageDataFound extends CoffeImagesState {
+  final String? imageUrl;
+  OnImageDataFound({
+    this.imageUrl,
+  });
 
-//   @override
-//   List<Object?> get props => <Object?>[assetsResponse];
-// }
+  @override
+  List<Object?> get props => <Object?>[imageUrl];
+}
 
 class OnNoDataFound extends CoffeImagesState {
   OnNoDataFound();

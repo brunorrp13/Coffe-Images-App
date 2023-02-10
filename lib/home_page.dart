@@ -1,86 +1,96 @@
-import 'dart:html';
-
+import 'package:coffe_pictures_assessment/bloc/coffe_images_bloc.dart';
+import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
+import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
+import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:coffe_pictures_assessment/services/coffe_images_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  CoffeImagesBloc get _bloc => BlocProvider.of<CoffeImagesBloc>(context);
+  CoffeImagesRepository repository = CoffeImagesRepository();
+  String? _imageUrl;
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return _builder();
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  CoffeImagesService? _service;
-  int _counter = 0;
-  File? _storedImage;
+  BlocBuilder _builder() {
+    return BlocBuilder<CoffeImagesBloc, CoffeImagesState>(
+        bloc: _bloc,
+        builder: (BuildContext context, CoffeImagesState state) {
+          if (state is OnNoDataFound) {
+            _imageUrl = null;
+          }
+          if (state is SuccessfullyLoadedContentState<OnImageDataFound>) {
+            _imageUrl = state.content.imageUrl;
+            _isLoading = false;
+            return _content();
+          }
+          if (state is LoadingState) {
+            _isLoading = true;
+            return _content();
+          }
+          _isLoading = false;
+          return _content();
+        });
+  }
 
   void _getImage() {
-    _service = CoffeImagesService();
-    _service!.getCoffeImage('/random');
-    setState(() {
-      _storedImage = _service;
-    });
+    _bloc.add(OnFindCoffeImage());
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _content() {
     return Scaffold(
         appBar: AppBar(),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
-              ),
               Container(
-                width: 150,
-                height: 100,
+                width: 250,
+                height: 200,
                 decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey),
                 ),
-                _storedImage != null
-                    ? Image.file(
-                        _storedImage,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      )
-                    : Text(
-                        'No Image Taken',
-                        textAlign: TextAlign.center,
-                      ),
                 alignment: Alignment.center,
+                child: _isLoading
+                    ? _loader()
+                    : _imageUrl != null
+                        ? Image.network(
+                            _imageUrl!,
+                            fit: BoxFit.cover,
+                          )
+                        : const Text(
+                            'No Image to be displayed',
+                            textAlign: TextAlign.center,
+                          ),
               ),
               ElevatedButton(
                   onPressed: () {
                     _getImage();
                   },
-                  child: Text("Load coffe image")),
+                  child: const Text("Load coffe image")),
               ElevatedButton(onPressed: () {}, child: Text("Save image"))
             ],
           ),
         ));
+  }
+
+  Center _loader() {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: Colors.grey,
+      ),
+    );
   }
 }

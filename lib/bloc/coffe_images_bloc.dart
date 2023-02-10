@@ -4,21 +4,23 @@ import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CoffeImagesBloc extends Bloc<CoffeImagesEvent, CoffeImagesState> {
-  final CoffeImagesRepository repository;
+  CoffeImagesRepository repository = CoffeImagesRepository();
 
   CoffeImagesBloc({
     required this.repository,
   }) : super(InitialState()) {
-    on<OnFindAssets>((event, emit) async {
+    on<OnFindCoffeImage>((event, emit) async {
       emit(LoadingState());
       try {
-        final String? response = "";
+        final String? response = await repository.getCoffeImage();
         if (response == null || response.isEmpty) {
           emit(OnNoDataFound());
           return;
         }
         if (response.isNotEmpty) {
-          emit(SuccessfullyLoadedContentState(content: response));
+          var imageData = OnImageDataFound(imageUrl: response);
+          emit(SuccessfullyLoadedContentState<OnImageDataFound>(
+              content: imageData));
           return;
         }
         emit(OnNoDataFound());
