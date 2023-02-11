@@ -1,6 +1,6 @@
 import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
-import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/model/image_model.dart';
 import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

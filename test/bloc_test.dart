@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_bloc.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
-import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/model/image_model.dart';
 import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,7 +28,7 @@ void main() {
       expect(_bloc.state, InitialState());
     });
     blocTest<CoffeImagesBloc, CoffeImagesState>(
-      'emits OnDataFound when nothing is found is added',
+      'emits OnDataFound when data is found',
       build: () {
         when(coffeImagesRepositoryMock.getCoffeImage())
             .thenAnswer((_) async => jsonMockedResponse);
@@ -42,7 +42,7 @@ void main() {
       ],
     );
     blocTest<CoffeImagesBloc, CoffeImagesState>(
-      'emits OnNoDataFound when nothing is found is added',
+      'emits OnNoDataFound when nothing is found',
       build: () => _bloc,
       act: ((bloc) => bloc.add(OnFindCoffeImage())),
       expect: () => <CoffeImagesState>[LoadingState(), OnNoDataFound()],

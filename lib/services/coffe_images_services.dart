@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/model/image_model.dart';
 import 'package:coffe_pictures_assessment/services/url_constant.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;

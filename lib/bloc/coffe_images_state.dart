@@ -1,4 +1,4 @@
-import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/model/image_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CoffeImagesState extends Equatable {}

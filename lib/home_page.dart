@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_bloc.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_events.dart';
 import 'package:coffe_pictures_assessment/bloc/coffe_images_state.dart';
-import 'package:coffe_pictures_assessment/image_model.dart';
+import 'package:coffe_pictures_assessment/model/image_model.dart';
 import 'package:coffe_pictures_assessment/repository/coffe_images_repository.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter/material.dart';
